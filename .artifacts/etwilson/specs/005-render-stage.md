@@ -6,6 +6,7 @@ base_branch: main
 depends_on: [STR-001, STR-004]
 scope_files:
   - pyproject.toml
+  - uv.lock
   - src/ff_briefing/stages/render.py
   - src/ff_briefing/render/__init__.py
   - src/ff_briefing/render/converter.py

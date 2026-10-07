@@ -16,6 +16,7 @@ Personal, single-user pipeline: fetches Sleeper data and configured web sources,
 - Tooling: `uv`, `pytest`, `mypy` (the type-check gate), `ruff`. Tests use recorded fixtures and never hit the network or a real LLM.
 - Follow TDD for behavior: parsing, data shaping, idempotence, failure handling, anything with logic that can be wrong.
 - Do not force RED-first tests onto pure scaffolding or wiring: project init, tool config, a launchd plist, a one-line `open` call. Verify those by running them. A test that only restates configuration earns no place.
+- Manual verification steps in specs (real Sleeper or LLM calls, opening a browser, installing a launchd agent) belong to the user after an autonomous run. Record them as pending in the run's `decisions.md` rather than performing them.
 - Where wiring wraps a side effect (running `open`, calling `claude -p`), inject the side effect and test the logic around it.
 
 ## Commands

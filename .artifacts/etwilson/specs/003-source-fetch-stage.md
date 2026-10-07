@@ -123,10 +123,10 @@ Stage output is a dict `{"items": list[ItemDict], "notes": list[NoteDict]}` with
 ---
 
 ## Tasks
-- [ ] **Models and config parsing:** Create `sources/models.py` and parsing of `config["sources"]` into `list[SourceConfig]` (missing/empty -> empty list; entry missing `name` or `url` is a clear error or note per STR-001 config conventions, pick note-and-skip to honor "run continues"). Add dependencies to `pyproject.toml`; add recorded fixtures (article HTML, JS-shell HTML, RSS, Atom, broken feed).
+- [ ] **Models and source list:** Create `sources/models.py` and a function turning `Config.source_urls` into `list[SourceConfig]` with hostname-derived names (TDD: `www.` stripped, empty list -> empty list). Add `feedparser` and `beautifulsoup4` to `pyproject.toml`; add recorded fixtures (article HTML, JS-shell HTML, RSS, Atom, broken feed).
 - [ ] **Extraction (TDD, pure):** `sources/extract.py` with `extract_page_text`, `looks_like_feed`, `parse_feed`. Fully tested against fixtures before next task.
 - [ ] **Fetch and skip-and-note (TDD):** `sources/fetch.py` with `fetch_source`, `fetch_all`, default httpx `get`. Test with injected fake `get` built from fixtures covering success, exception, bad status, empty/unparseable, JS shell, and mixed success/failure.
-- [ ] **Stage wiring:** `stages/sources.py` adapter to the pipeline's stage and persistence mechanism (reconcile with STR-001), plus `config.example.toml` `[[sources]]` placeholders. Test the stage with injected `get` and temp output. Verify config wiring by running, not by test.
+- [ ] **Stage wiring:** `stages/sources.py` (builds the output dict from `Config.source_urls` and an injected `get`) called by the `_fetch_sources` helper in `stages/fetch.py`, which writes `run_dir.sources_json`. Test with injected `get` and a `tmp_path` run dir; no network.
 
 ---
 

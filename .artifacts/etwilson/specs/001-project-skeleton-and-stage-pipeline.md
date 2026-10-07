@@ -26,6 +26,7 @@ scope_files:
   - tests/test_rundir.py
   - tests/test_pipeline.py
   - tests/test_cli.py
+  - tests/__init__.py
   - tests/conftest.py
 ---
 
@@ -67,6 +68,7 @@ Stand up the `uv`-managed Python project and a working end-to-end pipeline of st
 ## Technical Approach
 - **Entry points / interfaces:** console script `ff-briefing = ff_briefing.cli:main` plus `python -m ff_briefing`. Use `argparse` from the stdlib (no new dependency). Commands: `run [--force]`, `fetch`, `synthesize`, `render`, `deliver`; global options `--config PATH`, `--data-dir PATH`. `main(argv: Sequence[str] | None = None) -> int` returns the exit code.
 - **Layout:** `src/` layout, package `ff_briefing`. Python 3.12+ (`tomllib`). Build backend `hatchling`. Dev deps in a `dev` dependency group: `pytest`, `mypy`, `ruff`.
+- **Test layout:** `tests/` is a package (`tests/__init__.py`), and any test subdirectory later stories add (e.g. `tests/sleeper/`, `tests/sources/`) gets its own `__init__.py`, so same-named test modules in different subdirectories don't collide under pytest's default import mode. Shared test helpers are imported as `tests.<module>` (e.g. `from tests.fakes import ...`).
 - **Type-check script:** the project gate is `uv run mypy` with mypy configured in `pyproject.toml` (`strict = true`, `files = ["src", "tests"]`), so a bare `uv run mypy` is the gate. Record it in `CLAUDE.md` Commands alongside `uv run pytest`, `uv run ruff check`, `uv run ruff format --check`, and `uv run ff-briefing run`.
 - **Key modules:**
   - `config.py`: loads and validates `config.toml`; raises `ConfigError(Exception)` with a user-readable message.
@@ -115,9 +117,10 @@ Stand up the `uv`-managed Python project and a working end-to-end pipeline of st
   class StageFn(Protocol):
       def __call__(self, config: Config, run_dir: RunDir, today: date) -> None: ...
   STAGES: Mapping[str, StageFn]   # ordered: fetch, synthesize, render, deliver
-  def run_stage(name: str, config: Config, data_dir: Path, today: date) -> None: ...
-  def run_pipeline(config: Config, data_dir: Path, today: date, force: bool = False) -> bool: ...  # False if skipped
+  def run_stage(name: str, config: Config, data_dir: Path, today: date, stages: Mapping[str, StageFn] = STAGES) -> None: ...
+  def run_pipeline(config: Config, data_dir: Path, today: date, force: bool = False, stages: Mapping[str, StageFn] = STAGES) -> bool: ...  # False if skipped
   ```
+  **Pipeline tests must inject fake stages via `stages=`, never run the real registry.** Later stories replace the stubs with stages that hit the network, call `claude -p`, and open a browser; orchestration tests that ran the real registry would start doing all of that. The fake stages write the same files through `RunDir`, so handoff and idempotence are still proven. CLI tests likewise monkeypatch `run_pipeline` / `run_stage` for both `run` and per-stage dispatch.
   Every stage has the uniform signature `(config, run_dir, today) -> None`; stages read inputs only via `RunDir` properties and write only their own outputs. Later stories replace the body of `stages/<name>.py` and keep the signature. Delivery's side effect (`open`) is injected by the later delivery story; the stub does nothing.
 - **Config shape** (`config.example.toml`, checked in; `config.toml` is the user's copy and is committed only if it holds nothing private — it holds none):
   ```toml
