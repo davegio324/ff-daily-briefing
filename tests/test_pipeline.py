@@ -8,6 +8,7 @@ import pytest
 from ff_briefing.config import Config
 from ff_briefing.pipeline import STAGES, StageFn, run_pipeline, run_stage
 from ff_briefing.rundir import MissingInputError, RunDir
+from ff_briefing.stages import deliver as deliver_stage
 
 DAY = date(2026, 10, 7)
 CONFIG = Config(sleeper_username="eli", source_urls=[])
@@ -141,3 +142,42 @@ def test_stage_with_missing_input_raises_naming_file_and_producing_stage(tmp_pat
 
     assert "briefing.md" in str(excinfo.value)
     assert "synthesize" in str(excinfo.value)
+
+
+def stages_with_real_deliver(rec: Recorder) -> Mapping[str, StageFn]:
+    return {**rec.stages(), "deliver": deliver_stage.run}
+
+
+@pytest.fixture
+def opened(monkeypatch: pytest.MonkeyPatch) -> list[Path]:
+    paths: list[Path] = []
+    monkeypatch.setattr(deliver_stage, "open_in_browser", paths.append)
+    return paths
+
+
+def test_run_that_renders_a_new_briefing_opens_that_days_html_once(
+    tmp_path: Path, opened: list[Path]
+) -> None:
+    run_pipeline(CONFIG, tmp_path, DAY, stages=stages_with_real_deliver(Recorder()))
+
+    assert opened == [day_dir(tmp_path) / "briefing.html"]
+
+
+def test_run_skipped_because_briefing_exists_does_not_open_anything(
+    tmp_path: Path, opened: list[Path]
+) -> None:
+    run_pipeline(CONFIG, tmp_path, DAY, stages=Recorder().stages())
+
+    run_pipeline(CONFIG, tmp_path, DAY, stages=stages_with_real_deliver(Recorder()))
+
+    assert opened == []
+
+
+def test_forced_run_over_existing_briefing_opens_html_once(
+    tmp_path: Path, opened: list[Path]
+) -> None:
+    run_pipeline(CONFIG, tmp_path, DAY, stages=Recorder().stages())
+
+    run_pipeline(CONFIG, tmp_path, DAY, force=True, stages=stages_with_real_deliver(Recorder()))
+
+    assert opened == [day_dir(tmp_path) / "briefing.html"]

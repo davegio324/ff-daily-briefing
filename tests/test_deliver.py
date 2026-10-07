@@ -4,7 +4,6 @@ from pathlib import Path
 import pytest
 
 from ff_briefing.errors import BriefingError
-from ff_briefing.stages import deliver as deliver_stage
 from ff_briefing.stages.deliver import DeliveryError, deliver, open_in_browser
 
 
@@ -38,7 +37,7 @@ def test_nonzero_open_exit_raises_delivery_error(
 ) -> None:
     html = tmp_path / "briefing.html"
     monkeypatch.setattr(
-        deliver_stage.subprocess,
+        subprocess,
         "run",
         lambda *a, **k: subprocess.CompletedProcess(a, returncode=1),
     )
@@ -58,7 +57,7 @@ def test_open_in_browser_passes_absolute_path_and_succeeds_on_zero_exit(
         calls.append(cmd)
         return subprocess.CompletedProcess(cmd, returncode=0)
 
-    monkeypatch.setattr(deliver_stage.subprocess, "run", fake_run)
+    monkeypatch.setattr(subprocess, "run", fake_run)
     monkeypatch.chdir(tmp_path)
 
     open_in_browser(Path("briefing.html"))
