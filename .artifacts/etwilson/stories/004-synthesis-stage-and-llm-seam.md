@@ -2,7 +2,7 @@
 id: STR-004
 title: Synthesis stage and LLM seam
 epic: EPIC-001
-status: open
+status: specced
 priority: high
 ---
 

@@ -2,7 +2,7 @@
 id: STR-007
 title: launchd scheduling
 epic: EPIC-001
-status: open
+status: specced
 priority: high
 ---
 

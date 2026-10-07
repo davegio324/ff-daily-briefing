@@ -2,7 +2,7 @@
 id: STR-006
 title: Delivery
 epic: EPIC-001
-status: open
+status: specced
 priority: high
 ---
 

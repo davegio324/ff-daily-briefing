@@ -2,7 +2,7 @@
 id: STR-005
 title: Render stage
 epic: EPIC-001
-status: open
+status: specced
 priority: medium
 ---
 

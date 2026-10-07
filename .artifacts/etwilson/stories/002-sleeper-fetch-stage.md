@@ -2,7 +2,7 @@
 id: STR-002
 title: Sleeper fetch stage
 epic: EPIC-001
-status: open
+status: specced
 priority: high
 ---
 

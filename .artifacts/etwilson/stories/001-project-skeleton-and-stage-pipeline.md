@@ -2,7 +2,7 @@
 id: STR-001
 title: Project skeleton and stage pipeline
 epic: EPIC-001
-status: open
+status: specced
 priority: high
 ---
 

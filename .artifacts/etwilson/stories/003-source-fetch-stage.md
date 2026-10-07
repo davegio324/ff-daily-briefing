@@ -2,7 +2,7 @@
 id: STR-003
 title: Source fetch stage
 epic: EPIC-001
-status: open
+status: specced
 priority: high
 ---
 
