@@ -20,4 +20,9 @@ Personal, single-user pipeline: fetches Sleeper data and configured web sources,
 - Where wiring wraps a side effect (running `open`, calling `claude -p`), inject the side effect and test the logic around it.
 
 ## Commands
-Not yet defined; added once the project skeleton exists.
+- Test: `uv run pytest`
+- Type-check (the gate): `uv run mypy`
+- Lint: `uv run ruff check` and `uv run ruff format --check`
+- Run the pipeline: `uv run ff-briefing run` (`--force` to rerun today; `fetch`, `synthesize`, `render`, `deliver` run one stage)
+
+The stage contract (which file each stage reads and writes) lives in `rundir.py` and `pipeline.py`.
