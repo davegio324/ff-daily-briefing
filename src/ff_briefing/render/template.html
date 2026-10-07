@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>{{title}}</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fafaf8;
+  --fg: #1c1c1e;
+  --muted: #5c5c63;
+  --border: #d4d4d8;
+  --link: #1a56b0;
+  --stripe: #f0f0ec;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17181b;
+    --fg: #e6e6e8;
+    --muted: #a0a0a8;
+    --border: #3a3b40;
+    --link: #8ab4f8;
+    --stripe: #202226;
+  }
+}
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 2rem 1rem;
+}
+main { max-width: 46rem; margin: 0 auto; }
+.page-title { font-size: 1.6rem; margin: 0 0 1.5rem; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2.2rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--border); }
+a { color: var(--link); text-decoration: underline; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid var(--border); padding: 0.4rem 0.6rem; text-align: left; }
+tbody tr:nth-child(even) { background: var(--stripe); }
+code, pre { font-family: ui-monospace, Menlo, monospace; font-size: 0.9em; }
+pre { overflow-x: auto; padding: 0.8rem; background: var(--stripe); }
+blockquote { margin-left: 0; padding-left: 1rem; border-left: 3px solid var(--border); color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+<h1 class="page-title">{{title}}</h1>
+{{body}}
+</main>
+</body>
+</html>
