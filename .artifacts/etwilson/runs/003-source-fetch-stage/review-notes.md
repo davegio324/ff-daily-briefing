@@ -28,3 +28,13 @@
 **Test command run:** CI=true uv run pytest tests/sources/test_fetch.py -q (non-zero exit)
 **Scope issues:** none
 **Coverage gaps:** none
+
+## Task: Stage wiring
+
+## Verdict: APPROVED
+
+**Spec:** .artifacts/etwilson/specs/003-source-fetch-stage.md
+**Gate order:** RED confirmed (2 failed: TypeError, _fetch_sources takes 2 args; only tests/test_sources_stage.py untracked, no production edits)
+**Test command run:** CI=true uv run pytest tests/test_sources_stage.py -q (exit non-zero)
+**Scope issues:** none
+**Coverage gaps:** none

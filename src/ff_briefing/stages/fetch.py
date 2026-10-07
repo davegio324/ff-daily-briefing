@@ -5,6 +5,8 @@ from ff_briefing.config import Config
 from ff_briefing.rundir import RunDir
 from ff_briefing.sleeper.client import HttpSleeperClient, SleeperClient
 from ff_briefing.sleeper.fetch import fetch_sleeper
+from ff_briefing.sources.fetch import Get
+from ff_briefing.stages.sources import fetch_sources
 
 
 def _fetch_sleeper(config: Config, run_dir: RunDir, client: SleeperClient | None = None) -> None:
@@ -13,8 +15,9 @@ def _fetch_sleeper(config: Config, run_dir: RunDir, client: SleeperClient | None
     run_dir.sleeper_json.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
-def _fetch_sources(config: Config, run_dir: RunDir) -> None:
-    run_dir.sources_json.write_text(json.dumps({"sources": []}, indent=2), encoding="utf-8")
+def _fetch_sources(config: Config, run_dir: RunDir, get: Get | None = None) -> None:
+    data = fetch_sources(config.source_urls, get)
+    run_dir.sources_json.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
 def run(config: Config, run_dir: RunDir, today: date) -> None:
