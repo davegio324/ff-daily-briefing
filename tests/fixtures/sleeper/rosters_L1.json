@@ -1,0 +1,4 @@
+[
+  {"roster_id": 1, "owner_id": "2002", "starters": ["p9"], "players": ["p9", "p8"], "reserve": null, "settings": {"waiver_position": 1, "waiver_budget_used": 0}},
+  {"roster_id": 2, "owner_id": "1001", "starters": ["p1", "p2"], "players": ["p1", "p2", "p3", "pX"], "reserve": ["p3"], "settings": {"waiver_position": 4, "waiver_budget_used": 12}}
+]

@@ -1,0 +1,4 @@
+[
+  {"roster_id": 1, "owner_id": "1001", "starters": ["p2"], "players": ["p2", "p4"], "reserve": null, "settings": {}},
+  {"roster_id": 2, "owner_id": "3003", "starters": ["p5"], "players": ["p5", "p6"], "reserve": null, "settings": {"waiver_position": 2}}
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "league_id": "L1",
+    "name": "Sunday Funday",
+    "season": "2026",
+    "settings": {"waiver_type": 2, "waiver_day_of_week": 2, "waiver_clear_days": 1, "daily_waivers": false, "daily_waivers_hour": 0, "waiver_budget": 100},
+    "scoring_settings": {"pass_td": 4.0, "rec": 1.0, "rush_yd": 0.1},
+    "roster_positions": ["QB", "RB", "RB", "WR", "WR", "TE", "FLEX", "BN", "BN"]
+  },
+  {
+    "league_id": "L2",
+    "name": "Office League",
+    "season": "2026",
+    "settings": {"waiver_type": 0, "waiver_day_of_week": 3},
+    "scoring_settings": {"pass_td": 6.0, "rec": 0.5},
+    "roster_positions": ["QB", "RB", "WR", "TE", "BN"]
+  }
+]

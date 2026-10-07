@@ -1,0 +1,11 @@
+{
+  "p1": {"first_name": "Josh", "last_name": "Allen", "position": "QB", "team": "BUF", "status": "Active", "injury_status": null},
+  "p2": {"first_name": "Justin", "last_name": "Jefferson", "position": "WR", "team": "MIN", "status": "Active", "injury_status": "Questionable"},
+  "p3": {"first_name": "Chris", "last_name": "Olave", "position": "WR", "team": "NO", "status": "Injured Reserve", "injury_status": "IR"},
+  "p4": {"first_name": "Bijan", "last_name": "Robinson", "position": "RB", "team": "ATL", "status": "Active", "injury_status": null},
+  "p5": {"first_name": "Jaylen", "last_name": "Warren", "position": "RB", "team": "PIT", "status": "Active", "injury_status": null},
+  "p6": {"first_name": "Rome", "last_name": "Odunze", "position": "WR", "team": "CHI", "status": "Active", "injury_status": null},
+  "p7": {"first_name": "Tank", "last_name": "Bigsby", "position": "RB", "team": "PHI", "status": "Active", "injury_status": null},
+  "p8": {"first_name": "Other", "last_name": "Player", "position": "TE", "team": "KC", "status": "Active", "injury_status": null},
+  "p9": {"first_name": "Another", "last_name": "Guy", "position": "QB", "team": "DAL", "status": "Active", "injury_status": null}
+}
