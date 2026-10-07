@@ -1,0 +1,5 @@
+[sleeper]
+username = "your_sleeper_username"
+
+[sources]
+urls = ["https://example.com/feed.xml"]
