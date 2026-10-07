@@ -3,10 +3,14 @@ from datetime import date
 
 from ff_briefing.config import Config
 from ff_briefing.rundir import RunDir
+from ff_briefing.sleeper.client import HttpSleeperClient, SleeperClient
+from ff_briefing.sleeper.fetch import fetch_sleeper
 
 
-def _fetch_sleeper(config: Config, run_dir: RunDir) -> None:
-    run_dir.sleeper_json.write_text(json.dumps({}, indent=2), encoding="utf-8")
+def _fetch_sleeper(config: Config, run_dir: RunDir, client: SleeperClient | None = None) -> None:
+    # Fetch completes before any write so a failure leaves no sleeper.json behind.
+    data = fetch_sleeper(config.sleeper_username, client or HttpSleeperClient())
+    run_dir.sleeper_json.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
 def _fetch_sources(config: Config, run_dir: RunDir) -> None:
