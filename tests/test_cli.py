@@ -8,6 +8,7 @@ from ff_briefing import cli
 from ff_briefing.config import Config, ConfigError
 from ff_briefing.errors import BriefingError
 from ff_briefing.rundir import MissingInputError
+from ff_briefing.stages import deliver as deliver_stage
 
 
 class Calls:
@@ -134,3 +135,35 @@ def test_missing_config_file_exits_one_with_error_naming_the_file(
     assert err.startswith("error: ")
     assert "nope.toml" in err
     assert "Traceback" not in err
+
+
+def test_deliver_subcommand_opens_the_existing_html_for_the_day(
+    monkeypatch: pytest.MonkeyPatch, config_file: Path, tmp_path: Path
+) -> None:
+    opened: list[Path] = []
+    monkeypatch.setattr(deliver_stage, "open_in_browser", opened.append)
+    html = tmp_path / date.today().isoformat() / "briefing.html"
+    html.parent.mkdir()
+    html.write_text("<p>hi</p>", encoding="utf-8")
+
+    code = cli.main(["--config", str(config_file), "--data-dir", str(tmp_path), "deliver"])
+
+    assert code == 0
+    assert opened == [html]
+
+
+def test_deliver_subcommand_without_rendered_html_exits_one_without_opening(
+    monkeypatch: pytest.MonkeyPatch,
+    config_file: Path,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    opened: list[Path] = []
+    monkeypatch.setattr(deliver_stage, "open_in_browser", opened.append)
+
+    code = cli.main(["--config", str(config_file), "--data-dir", str(tmp_path), "deliver"])
+
+    err = capsys.readouterr().err
+    assert code == 1
+    assert "briefing.html" in err
+    assert opened == []
