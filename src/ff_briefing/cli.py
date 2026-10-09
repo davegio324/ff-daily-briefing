@@ -1,4 +1,5 @@
 import argparse
+import logging
 import sys
 from collections.abc import Sequence
 from datetime import date
@@ -23,6 +24,9 @@ def _parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s  %(message)s", datefmt="%H:%M:%S", stream=sys.stderr
+    )
     today = date.today()
     try:
         config = load_config(args.config)

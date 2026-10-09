@@ -1,4 +1,5 @@
 import json
+import logging
 from collections.abc import Mapping
 from datetime import date
 from pathlib import Path
@@ -181,3 +182,27 @@ def test_forced_run_over_existing_briefing_opens_html_once(
     run_pipeline(CONFIG, tmp_path, DAY, force=True, stages=stages_with_real_deliver(Recorder()))
 
     assert opened == [day_dir(tmp_path) / "briefing.html"]
+
+
+def test_each_stage_logs_when_it_starts_and_when_it_finishes(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    with caplog.at_level(logging.INFO, logger="ff_briefing"):
+        run_pipeline(CONFIG, tmp_path, DAY, stages=Recorder().stages())
+
+    messages = [r.getMessage() for r in caplog.records]
+    for name in ["fetch", "synthesize", "render", "deliver"]:
+        started = next(i for i, m in enumerate(messages) if m.startswith(f"{name}: starting"))
+        finished = next(i for i, m in enumerate(messages) if m.startswith(f"{name}: done in"))
+        assert started < finished
+
+
+def test_failing_stage_logs_which_stage_failed(
+    tmp_path: Path, caplog: pytest.LogCaptureFixture
+) -> None:
+    with caplog.at_level(logging.INFO, logger="ff_briefing"):
+        with pytest.raises(MissingInputError):
+            run_stage("render", CONFIG, tmp_path, DAY, stages=Recorder().stages())
+
+    messages = [r.getMessage() for r in caplog.records]
+    assert any(m.startswith("render: failed after") for m in messages)

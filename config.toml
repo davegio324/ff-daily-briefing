@@ -1,5 +1,19 @@
 [sleeper]
-username = "your_sleeper_username"
+username = "CharlowBiS"
 
 [sources]
-urls = ["https://example.com/feed.xml"]
+# Boris Chen weekly tiers (plain text). Suffix -HALF = 0.5 PPR, -PPR = full PPR;
+# QB/K/DST have no scoring variants.
+urls = [
+  "https://s3-us-west-1.amazonaws.com/fftiers/out/text_QB.txt",
+  "https://s3-us-west-1.amazonaws.com/fftiers/out/text_K.txt",
+  "https://s3-us-west-1.amazonaws.com/fftiers/out/text_DST.txt",
+  "https://s3-us-west-1.amazonaws.com/fftiers/out/text_RB-HALF.txt",
+  "https://s3-us-west-1.amazonaws.com/fftiers/out/text_WR-HALF.txt",
+  "https://s3-us-west-1.amazonaws.com/fftiers/out/text_TE-HALF.txt",
+  "https://s3-us-west-1.amazonaws.com/fftiers/out/text_FLX-HALF.txt",
+  "https://s3-us-west-1.amazonaws.com/fftiers/out/text_RB-PPR.txt",
+  "https://s3-us-west-1.amazonaws.com/fftiers/out/text_WR-PPR.txt",
+  "https://s3-us-west-1.amazonaws.com/fftiers/out/text_TE-PPR.txt",
+  "https://s3-us-west-1.amazonaws.com/fftiers/out/text_FLX-PPR.txt",
+]

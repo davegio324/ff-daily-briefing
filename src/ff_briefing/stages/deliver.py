@@ -1,3 +1,4 @@
+import logging
 import subprocess
 from collections.abc import Callable
 from datetime import date
@@ -8,6 +9,9 @@ from ff_briefing.errors import BriefingError
 from ff_briefing.rundir import RunDir
 
 Opener = Callable[[Path], None]
+
+
+log = logging.getLogger("ff_briefing")
 
 
 class DeliveryError(BriefingError):
@@ -24,6 +28,7 @@ def open_in_browser(path: Path) -> None:
 def deliver(html_path: Path, opener: Opener | None = None) -> None:
     if not html_path.is_file():
         raise DeliveryError(f"cannot deliver: briefing HTML not found at {html_path}")
+    log.info("deliver: opening %s in the default browser", html_path)
     # Resolved at call time so pipeline tests can monkeypatch open_in_browser.
     (opener or open_in_browser)(html_path)
 

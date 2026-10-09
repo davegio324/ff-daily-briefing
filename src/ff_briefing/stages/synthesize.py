@@ -1,4 +1,5 @@
 import json
+import logging
 from datetime import date
 from typing import Any
 
@@ -8,6 +9,8 @@ from ff_briefing.llm.seam import LLMClient
 from ff_briefing.rundir import RunDir
 from ff_briefing.synthesis.context import LeagueData, build_context
 from ff_briefing.synthesis.prompt import PLACEHOLDER_PROMPT
+
+log = logging.getLogger("ff_briefing")
 
 
 def _with_details(player_ids: list[str], players: dict[str, Any]) -> list[dict[str, Any]]:
@@ -61,7 +64,16 @@ def load_inputs(
 
 def synthesize_with(client: LLMClient, config: Config, run_dir: RunDir, today: date) -> None:
     leagues, items, notes = load_inputs(run_dir)
-    briefing = client.complete(build_context(leagues, items, notes, today), PLACEHOLDER_PROMPT)
+    context = build_context(leagues, items, notes, today)
+    log.info(
+        "synthesize: sending %d chars of context (%d leagues, %d source items) to the LLM; "
+        "this usually takes about a minute and prints nothing until it finishes",
+        len(context),
+        len(leagues),
+        len(items),
+    )
+    briefing = client.complete(context, PLACEHOLDER_PROMPT)
+    log.info("synthesize: LLM returned %d chars", len(briefing))
     run_dir.briefing_md.write_text(briefing, encoding="utf-8")
 
 
