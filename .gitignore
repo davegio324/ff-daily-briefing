@@ -8,3 +8,6 @@ data/
 output/
 *.log
 .DS_Store
+
+# Personal config; copy config.example.toml to create it
+config.toml
