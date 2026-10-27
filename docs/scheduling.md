@@ -1,5 +1,8 @@
 # Scheduling the daily briefing with launchd
 
+For an ESPN league using a scheduled Codex chat instead of this Python pipeline,
+see [ESPN briefings with Codex](espn-codex.md).
+
 A launchd user agent (`com.ff-daily-briefing`) runs `ff-briefing run` once a day at 07:00 local time.
 
 ## Prerequisites
